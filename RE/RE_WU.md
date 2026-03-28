@@ -45,8 +45,8 @@ ocip   -> pico
 
 ## hidencipher2
 
-* Kết nối đến server và trả lời câu hỏi toán học của nó
-* Trả lời đúng thì nó gửi cho flag bị encode
+* First i connect to server and server give me a math problem(very easy to answer)
+* Then you just answer the math problem and recieve the encoded flag
 
 ```c
 int __fastcall encode_flag(__int64 a1, int a2)
@@ -68,7 +68,7 @@ int __fastcall encode_flag(__int64 a1, int a2)
 1680, 1575, 1485, 1665, 1005, 1260, 1050, 1845, 1635, 780, 1740, 1560, 1425, 1470, 765, 1560, 735, 1650, 1500, 1425, 1485, 735, 1680, 1560, 765, 1710, 1425, 780, 1455, 765, 1470, 750, 1485, 1485, 1530, 1875
 ```
 
-* Khi chia các số này cho `picoCTF{` thì luôn được 15
+* Try to divide the encoded flag to ascii number of every character with the prefix flag `picoCTF{` and its alway return 15
 
 ```txt
 1680 / p (112) = 15
@@ -88,7 +88,7 @@ int __fastcall encode_flag(__int64 a1, int a2)
 1845 / { (123) = 15
 ```
 
-* Vậy thì chỉ cần lấy các số trả về và chia chúng cho 15 rồi chuyển chúng thành dạng ascii char là xong
+* So what i need to do is divide all encoded number to 15 and then convert number to character according to the ascii table and recieve the flag
 
 ```python
 data = [1680, 1575, 1485, 1665, 1005, 1260, 1050, 1845, 1635, 780, 1740, 1560, 1425, 1470, 765, 1560, 735, 1650, 1500, 1425, 1485, 735, 1680, 1560, 765, 1710, 1425, 780, 1455, 765, 1470, 750, 1485, 1485, 1530, 1875] # Replace your nums list here
@@ -103,9 +103,9 @@ print(f"Flag is : {text}") # Flag
 
 ## The Add/On Trap
 
-* Đầu tiên ngay khi unzip thì nó cho một file `.xpi` và việc cần làm đó là đổi lại thành file `.zip`
-* Sau đó ta sẽ nhận được một file để chạy trình duyệt và mở file `main.js`
-
+* First when i dowloaded the file it have suffix `.xpi` file so i change it to the suffix `.zip` file and compress it
+* After compress the file, i recieve a folder and wwhen open that folder i see the `main.js`
+* In this `main.js` files it have this encode string
 ```js
 console.log(`Information to exfiltrate: ${details.url}`);
     const key="cGljb0NURnt5b3UncmUgb24gdGhlIHJpZ2h0IHRyYX0="
@@ -117,7 +117,8 @@ console.log(`Information to exfiltrate: ${details.url}`);
     ...
 ```
 
-* Key được encode `base64` và `webhookUrl` là Fernet
+* The key encoded by `base64` and the `webhookUrl` was `Fernet`
+* SO i using python and decode the webbookurl by the Fernet in cryptographic lib, run this file and recieve the flag
 
 ```python
 from cryptography.fernet import Fernet
