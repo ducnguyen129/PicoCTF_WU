@@ -3,24 +3,18 @@
 ## gatekeeper
 
 * Input: số lớn hơn 999 bé hơn 9999
-* Chuỗi nhập vào có thể là các chữ cái vì nó có hàm `atoi`(ascii to string)
-* Nhập abc: được chuỗi `}847ftc_oc_ipd936ftc_oc_ipb_99ftc_oc_ip9_TGftc_oc_ip_xehftc_oc_ip_tigftc_oc_ipid_3ftc_oc_ip{FTCftc_oc_ipocipftc_oc_ip`
-các chuỗi bị lặp lại là : `ftc_oc_ip`
-Từ đó ta có thể tìm ra các chuỗi không lặp:
+* Chuỗi nhập vào có thể là các chữ cái vì nó có hàm `atoi`(ascii to int)
+* Enter random input to test and recive
+```
+}847ftc_oc_ipd936ftc_oc_ipb_99ftc_oc_ip9_TGftc_oc_ip_xehftc_oc_ip_tigftc_oc_ipid_3ftc_oc_ip{FTCftc_oc_ipocipftc_oc_ip
+```
+From this output i can see that the string `ftc_oc_ip` looping so i just delete all the looping character and recieve the pure string
 
 ```shell
-}847
-d936
-b_99
-9_TG
-_xeh
-_tig
-id_3
-{FTC
-ocip
+}847d936b_999_TG_xeh_tigid_3{FTCocip
 ```
 
-* Việc bây giờ chỉ cần đảo ngược lại các xâu trong này
+* Reverse all the pure string and get the flag
 
 ```shell
 }847   -> 748}
@@ -34,16 +28,18 @@ id_3   -> 3_di
 ocip   -> pico
 ```
 
-* Dịch ra thành: `picoCTF{3_digit_hex_GT_999_b639d748}`
+* Flag: `picoCTF{3_digit_hex_GT_999_b639d748}`
 
-## hiddencipher
+## hiddencipher 1
 
-* Kết nối đến server : 235a201d702015483b1d412b265d3313501f0c072d135f0d2002302d06476350224507462e
-* Đây là flag được mã hóa bởi XOR (tính chất: Nếu XOR hai lần với key là chính nó thì vẫn ra chính nó)
-* Nếu như XOR thử `picoCTF{` thì nó sẽ ra được cái này: `S3Cr3t`
+* When start execute the program, you will recived flag but encoded
+![Encoded flag](../../PicoCTF_WU/img/Screenshot%202026-04-10%20123925.png)
+* The encode flag is : `235a201d70201548251358110c552f135409`
+* But i don't know how the encode flag printing so i use ida to decompiler the file `hidencipher`
+
 * Thử XOR với đoạn text bên trên và được flag: `picoCTF{xor_unpack_4nalys1s_530ca742}`
 
-## hidencipher2
+## hidencipher 2
 
 * First i connect to server and server give me a math problem(very easy to answer)
 * Then you just answer the math problem and recieve the encoded flag
@@ -63,9 +59,12 @@ int __fastcall encode_flag(__int64 a1, int a2)
   return putchar(10);
 }
 ```
+* Encode technique: using the number `a2` multiply with the character of the flag but you can guess it after recieve the encode flag
 
-```shell
+```python
+Encodeflag = [
 1680, 1575, 1485, 1665, 1005, 1260, 1050, 1845, 1635, 780, 1740, 1560, 1425, 1470, 765, 1560, 735, 1650, 1500, 1425, 1485, 735, 1680, 1560, 765, 1710, 1425, 780, 1455, 765, 1470, 750, 1485, 1485, 1530, 1875
+]
 ```
 
 * Try to divide the encoded flag to ascii number of every character with the prefix flag `picoCTF{` and its alway return 15
@@ -87,7 +86,7 @@ int __fastcall encode_flag(__int64 a1, int a2)
 
 1845 / { (123) = 15
 ```
-
+* Combine with the encode technique we discorvered we can see that the `a2` is 15 
 * So what i need to do is divide all encoded number to 15 and then convert number to character according to the ascii table and recieve the flag
 
 ```python
@@ -117,7 +116,7 @@ console.log(`Information to exfiltrate: ${details.url}`);
     ...
 ```
 
-* The key encoded by `base64` and the `webhookUrl` was `Fernet`
+* The key is encoded by `base64` and the `webhookUrl` is `Fernet`
 * SO i using python and decode the webbookurl by the Fernet in cryptographic lib, run this file and recieve the flag
 
 ```python
@@ -138,4 +137,4 @@ print(f"Decrypted Webhook: {decrypted_url.decode('utf-8')}")
 
 flag : `picoCTF{Us3_4dd/0ns_v3ry_c4r3fully1}`
 
-## 
+## Auto Rev
