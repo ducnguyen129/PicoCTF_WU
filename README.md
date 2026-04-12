@@ -7,19 +7,19 @@
 * Thanks for reading this WU. Enjoy ٩(^ᗜ^ )و ´-
 ## Challenge
 
-| Challenge | Solved |
-|-----------|--------|
-| Gatekeeper | ✅ | 
-| Hidden Cipher 1 | ✅ | 
-| Hidden Cipher 2 | ✅ |
-| Bypass Me | ❌ |
-| The Add/On Trap | ✅ |
-| Silent Stream | ✅ |
-| Autorev 1 | ✅ |
-| Secure Password Database | ✅ |
-| Binary Instrumentation 3 | ❌ |
-| Binary Instrumentation 4 | ❌ |
-| JITFP | ❌ |
+| Challenge | Point | Solved |
+|-----------|-------|---------|
+| Gatekeeper | 100 | ✅ | 
+| Hidden Cipher 1 | 100 | ✅ | 
+| Hidden Cipher 2 | 100 | ✅ |
+| Bypass Me | 200 | ❌ |
+| The Add/On Trap | 200 | ✅ |
+| Silent Stream | 200 | ✅ |
+| Autorev 1 | 200 | ✅ |
+| Secure Password Database | 200 | ✅ |
+| Binary Instrumentation 3 | 300 | ❌ |
+| Binary Instrumentation 4 | 400 | ❌ |
+| JITFP | 500 | ❌ |
 ## Tool using
 * Ida pro 9.2 version
 * Ghidra
