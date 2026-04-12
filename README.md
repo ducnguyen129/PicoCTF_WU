@@ -14,13 +14,15 @@
 | Hidden Cipher 2 | ✅ |
 | Bypass Me | ❌ |
 | The Add/On Trap | ✅ |
-| Silent Stream | ❌ |
+| Silent Stream | ✅ |
 | Autorev 1 | ✅ |
-| Secure Password Database | ❌ |
+| Secure Password Database | ✅ |
 | Binary Instrumentation 3 | ❌ |
 | Binary Instrumentation 4 | ❌ |
 | JITFP | ❌ |
 ## Tool using
 * Ida pro 9.2 version
+* Ghidra
 * Detect it Easy
+* Scapy/Wireshark
 * LLM

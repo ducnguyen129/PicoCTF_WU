@@ -2,9 +2,9 @@
 
 ## gatekeeper
 
-* Input: số lớn hơn 999 bé hơn 9999
-* Chuỗi nhập vào có thể là các chữ cái vì nó có hàm `atoi`(ascii to int)
-* Enter random input to test and recive
+* Input: A number greater than 999 and less than 9999
+* Because of `atoi`(ascii to int) so we can enter a ascii string and it transfer to a number in ascii table
+* Enter random input that when plus all ascii to int char greater than 999 to test and recive(I using string `abc` as input)
 ```
 }847ftc_oc_ipd936ftc_oc_ipb_99ftc_oc_ip9_TGftc_oc_ip_xehftc_oc_ip_tigftc_oc_ipid_3ftc_oc_ip{FTCftc_oc_ipocipftc_oc_ip
 ```
@@ -136,5 +136,92 @@ print(f"Decrypted Webhook: {decrypted_url.decode('utf-8')}")
 ```
 
 flag : `picoCTF{Us3_4dd/0ns_v3ry_c4r3fully1}`
+
+## Silent stream
+
+* The challenge file have an pcap file `packet.pcap` and the `encrypt.py`
+* First open the encrypt.py
+
+```python
+import socket
+
+def encode_byte(b, key):
+
+    return (b + key) % 256
+
+def simulate_flag_transfer(filename, key=42):
+    print(f"[!] flag transfer for '{filename}' using encoding key = {key}")
+
+    with open(filename, "rb") as f:
+        data = f.read()
+
+    print(f"[+] Encoding and sending {len(data)} bytes...")
+
+    for b in data:
+        encoded = encode_byte(b, key)
+        pass
+
+    print("Transfer complete")
+
+if __name__ == "__main__":
+    simulate_flag_transfer("flag.txt") 
+
+```
+* The encode byte function is trying to create new byte by using the original byte `b` plus 42 and modulo with 256(the range of Ipv4 address) so what we need to decode is dump all raw byte from `packets.pcap` and decode all bytes
+* But first lets open the packets file and see what happen
+![All packet](../img/Screenshot%202026-04-10%20181755.png)
+* All packet in this file using TCP protocol and port 9000 so i have to using python code to dump all byte from packet which using TCP protocol at port 9000 then append it into the bytearray with decode technique then write it into a file
+
+```python
+from scapy.all import *
+
+packet = rdpcap("packets.pcap")
+all_raw_data = bytearray()
+for pkt in packet:
+    if Raw in pkt and TCP in pkt and pkt[TCP].dport == 9000 :
+        all_raw_data.extend(pkt[Raw].load)
+h = bytearray()
+for b in all_raw_data:
+    h.append((b-42) % 256)
+f = open("flag","wb")
+f.write(h)
+```
+* Recive the file name flag and this is the JPEG image file and just rename file with .jpeg and i got the flag
+![Flag](../img/flag.jpeg)
+Flag: `picoCTF{tr4ck_th3_tr4ff1c_8d66583c}`
+
+## Secure Password Database
+
+* When start running the program, i try to type random input but in check hash, when i type random input it terminate the program
+* So the mission is, what is the check hash i need to type so lets load to IDA for answer
+* In IDA, you can see a function name `make_secret` and this is the function to check hash
+```c
+__int64 __fastcall make_secret(__int64 a1)
+{
+  __int64 i; // [rsp+10h] [rbp-8h]
+
+  for ( i = 0; obf_bytes[i]; ++i )
+    *(_BYTE *)(a1 + i) = obf_bytes[i] ^ 0xAA;
+  *(_BYTE *)(a1 + 12) = 0;
+  return hash(a1);
+}
+```
+* Using byte of obf_byte and dump it and we have hash byte then XOR with `0xAA` and then refact again the `hash` function
+
+```python
+data = bytearray()
+hash_byte = [0xC3, 0xFF, 0xC8, 0xC2, 0x92, 0x9B, 0x8B, 0xC0, 0x80, 0xC2, 0xC4, 0x8B]
+for i in range(len(hash_bytes)):
+    data.append(hash_byte[i]^0xAA)
+index = 5381
+hash = ""
+for i in range(len(data)):
+    index=(33 * index + data[i])&0xFFFFFFFFFFFFFFFF
+    hash+=index
+print(f"Your hash: {hash}")
+```
+* When you have a hash now connect to the server and using random input and enter that hash value
+
+Flag:`picoCTF{d0nt_trust_us3rs}`
 
 ## Auto Rev
