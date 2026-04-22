@@ -6,5 +6,5 @@ index = 5381
 hash = ""
 for i in range(len(data)):
     index=(33 * index + data[i])&0xFFFFFFFFFFFFFFFF
-    hash+=index
-print(f"Your hash: {hash}")
+    hash+=str(index)
+print(f"Your hash: {index}")
